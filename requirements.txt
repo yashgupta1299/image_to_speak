@@ -1,0 +1,17 @@
+matplotlib
+numpy
+pandas
+scikit-learn
+scipy
+ipywidgets
+ipykernel
+datasets
+transformers
+jupytext
+evaluate
+jiwer
+transformers[torch]
+fastapi
+uvicorn
+# python-multipart
+gTTs
