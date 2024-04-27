@@ -1,6 +1,3 @@
-torch
-torchvision
-torchaudio
 matplotlib
 numpy
 pandas
@@ -16,6 +13,5 @@ jiwer
 transformers[torch]
 fastapi
 uvicorn
-python-multipart
+# python-multipart
 gTTs
-together

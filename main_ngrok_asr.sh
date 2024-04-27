@@ -1,0 +1,1 @@
+ngrok http --config '/Users/yashgupta/Library/Application Support/ngrok/ngrok_asr.yml' --domain=fowl-chief-shrimp.ngrok-free.app 8085

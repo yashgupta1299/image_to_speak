@@ -4,15 +4,17 @@ import base64
 from PIL import Image
 from transformers import pipeline
 from transformers import BlipProcessor, BlipForConditionalGeneration
+# from huggingsound import SpeechRecognitionModel
 import warnings
 import base64
 import io
 from io import BytesIO
 from gtts import gTTS
-from fastapi import FastAPI, Request, File, UploadFile
+from fastapi import FastAPI, Request, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 import matplotlib.pyplot as plt
 from pydantic import BaseModel
+# from aiofiles import open as aio_open
 import time
 import os
 from together import Together
@@ -29,14 +31,15 @@ device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 cpu_device = torch.device("cpu")
 print(device)
 
-model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-large", torch_dtype=torch.float16).to(device)
+model_caption = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-large", torch_dtype=torch.float16).to(device)
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn", device=cpu_device)
+# model_asr = SpeechRecognitionModel("jonatasgrosman/wav2vec2-large-xlsr-53-english", device=cpu_device)
 
 client = Together(api_key=os.environ.get("OPENAI_API_KEY"))
 
 def get_image_caption(raw_image):
     inputs = processor(raw_image, return_tensors="pt").to(device, torch.float16)
-    out = model.generate(**inputs)
+    out = model_caption.generate(**inputs)
     caption = processor.decode(out[0], skip_special_tokens=True)
     return caption
 
@@ -132,3 +135,33 @@ async def view(obj: ViewData):
 
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+# async def save_wav_file(file: UploadFile):
+#     try:
+#         # Read file contents synchronously
+#         contents = await file.read()
+#         async with aio_open("uploaded_file.wav", 'wb') as out_file:
+#             # Write file contents asynchronously
+#             await out_file.write(contents)
+#         return "uploaded_file.wav"
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+
+# @app.post("/asr")
+# async def upload_wav_file(file: UploadFile = File(...)):
+#     try:
+#         audio_path = await save_wav_file(file)
+#         audio_paths = [audio_path]
+#         transcriptions = model_asr.transcribe(audio_paths)
+#         words = transcriptions[0]['transcription']
+#         words = words.lower().strip().split(' ')
+#         commands = ['reset', 'replay', 'capture', 'describe']
+#         send_command = 'no_command'
+#         for word in words:
+#             if word in commands:
+#                 send_command = word
+#                 break
+#         return JSONResponse(content={"action": send_command})
+#     except Exception as e:
+#         return JSONResponse(content={"error": str(e)}, status_code=500)

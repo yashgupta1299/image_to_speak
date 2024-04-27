@@ -1,0 +1,1 @@
+uvicorn main_asr:app --host localhost --port 8085 --reload

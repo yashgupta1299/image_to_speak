@@ -1,0 +1,10 @@
+torch
+torchvision
+torchaudio
+huggingsound
+aiofiles
+fastapi
+uvicorn
+python-multipart
+ipywidgets
+ipykernel
