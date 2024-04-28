@@ -52,7 +52,7 @@ async def upload_wav_file(file: UploadFile = File(...)):
         transcriptions = model_asr.transcribe(audio_paths)
         words = transcriptions[0]['transcription']
         words = words.lower().strip().split(' ')
-        commands = ['reset', 'replay', 'capture', 'describe']
+        commands = ['reset', 'replay', 'capture', 'describe', 'clear']
         send_command = 'no_command'
         for word in words:
             if word in commands:
