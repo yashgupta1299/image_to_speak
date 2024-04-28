@@ -1,3 +1,10 @@
+# Image Speak App
+
+## Tech Stack
+- FastAPI
+- ngrok
+- Pytorch
+
 ### ImageSpeak: Empowering Visual Understanding
 
 > - ImageSpeak is a hackathon challenge aimed at enhancing accessibility for individuals
