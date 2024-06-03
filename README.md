@@ -1,6 +1,11 @@
 # Image Speak App
 
-## Tech Stack
+## Tech Stack Frontend
+- React Native
+- Expo
+- React Native Gesture Handler
+
+## Tech Stack Backend
 - FastAPI
 - ngrok
 - Pytorch
